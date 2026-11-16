@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Marginalia
 
-## Getting Started
+A hand-drawn, pixel-art video player skin for **Video.js v10**, built for the Video.js v10 Skins Design Challenge.
 
-First, run the development server:
+**Live demo:** https://marginalia-nu-six.vercel.app/
+**Mux playback ID:** `8gi016wF2YOjW8Z02aFvb73jIwwiXJ8vWe015l02GFlUUUk`
+
+## The idea
+
+Most players hide the video behind chrome. Marginalia treats the video like a print taped into a sketchbook, and treats the controls like notes scribbled in the margin.
+
+- **Play** is a yellow sticky note with a red marker circle that redraws itself on every press.
+- **Seek** is a pencil line that gets inked in red as you play. A pixel astronaut rides it, leaves sparks while playing, and hops when you scrub.
+- **Volume** is a hand-drawn squiggle that inks in blue.
+- **A mascot** slides out from between the two prints to announce what just happened ("Rolling!", "Volume 65%", "Shhh… muted").
+- **THE END** is a red rubber stamp that slams onto the screen, with a small shake, when the video finishes.
+- **Controls tuck away** two seconds after playback starts. Hover the bottom of the player, press a key, or touch the screen to bring them back.
+- **Extras:** playback speed, picture-in-picture, captions (when the video has a track), and a `?` keyboard cheat sheet.
+
+## Built with
+
+Next.js 16, Tailwind CSS 4, `@videojs/react` 10 and `@videojs/mux-video`. Video is hosted on Mux and streamed over HLS. Fonts are Caveat, Patrick Hand and Silkscreen.
+
+Video.js components render no styles of their own. The skin styles them through their `data-*` attributes and CSS variables (for example `--media-slider-fill` drives the red ink on the seek line), so every control is a real Video.js component.
+
+## Accessibility
+
+- Full keyboard control: `Space`/`K` play, `M` mute, `F` fullscreen, `←`/`→` skip 5s, `?` shortcuts, `Esc` closes the cheat sheet.
+- A visible two-tone focus ring on every control, readable over bright and dark video.
+- Hidden controls reappear on keyboard focus.
+- Playback changes are announced to screen readers through Video.js's status announcer.
+- Tap targets of at least 44px on phones. Responsive layouts for portrait and landscape.
+- `prefers-reduced-motion` turns off the wobble, sparks, slide and zoom animations.
+
+## Run it locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. To use your own video, set `PLAYBACK_ID` in `src/components/marginalia/MarginaliaPlayer.tsx` to any public Mux playback ID.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Files
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/components/marginalia/MarginaliaSkin.tsx`: the skin (components, mascot, auto-hide)
+- `src/components/marginalia/marginalia.css`: all styling, including mobile and fullscreen
+- `src/components/marginalia/SketchDefs.tsx`: SVG filters for the wobbling hand-drawn lines
